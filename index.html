@@ -27,7 +27,9 @@
 				 {
 				 	Table[key]={}
 				 	var theDate = new Date(data.games[key].end_time * 1000);
-				 	Table[key].data=theDate.toGMTString();
+				 	theDate.setHours(theDate.getHours() + 5);
+				 	theDate.setMinutes(theDate.getMinutes() + 30);
+				 	Table[key].date=theDate.toGMTString().replace("GMT","IST");
 				 	Table[key].white=data.games[key].white.username+' ('+data.games[key].white.rating+')';
 				 	Table[key].black=data.games[key].black.username+' ('+data.games[key].black.rating+')';
 				 	
@@ -39,7 +41,7 @@
 				 for(key=keys.length-1;key>=0;key--)
 		  		{
 				 	r[++j] ='<tr><th>';
-				     r[++j] = Table[key].data
+				     r[++j] = Table[key].date
 				     r[++j] = '</th><td>';
 				     r[++j] = Table[key].white
 				     r[++j] = '</td><td>';
@@ -74,7 +76,9 @@
 				 {
 				 	Table[key]={}
 				 	var theDate = new Date(data.games[key].end_time * 1000);
-				 	Table[key].data=theDate.toGMTString();
+				 	theDate.setHours(theDate.getHours() + 5);
+				 	theDate.setMinutes(theDate.getMinutes() + 30);
+				 	Table[key].date=theDate.toGMTString().replace("GMT","IST");
 				 	Table[key].white=data.games[key].white.username+' ('+data.games[key].white.rating+')';
 				 	Table[key].black=data.games[key].black.username+' ('+data.games[key].black.rating+')';
 				 	
@@ -86,7 +90,7 @@
 				 for(key=keys.length-1;key>=0;key--)
 		  		{
 				 	r[++j] ='<tr><th>';
-				     r[++j] = Table[key].data
+				     r[++j] = Table[key].date
 				     r[++j] = '</th><td>';
 				     r[++j] = Table[key].white
 				     r[++j] = '</td><td>';
