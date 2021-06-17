@@ -1,0 +1,154 @@
+<html>
+
+<head>
+    <title>
+        Excercise Tracker
+    </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh6U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    <script src="js/tracker.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 col-sm-12  pl-5" style="background-color: black;color: white;">
+                <h6 class="mt-5">Calories Burned till now...</h6>
+                <h1 id="total">loading...</h1>
+                <h6>Your rank...</h6>
+                <h1 id="rank">loading...</h1></br>
+                <img src="cs_go_ranks/1.png" id="rank_img" class="rounded mb-5" style="width:400px;height:160px;"
+                    alt="Cinque Terre">
+            </div>
+            <div class="col-md-6 col-sm-12">
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="fixed-bottom fixed-left col-6 pl-3 pt-3">
+                <form class="form-inline ml-0" action='#'>
+                    <input type="number" class="form-control mb-2 mr-sm-2" id="inlineFormInputName2" placeholder="0">
+                    <button class="btn btn-primary mb-2" onclick="add()">Add</button>
+                    <button class="btn btn-primary mb-2" style="margin-left: 3px;" onclick="del()">Del</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        function add() {
+            a = document.getElementById('inlineFormInputName2').value;
+            if (a == "" || a <= 0)
+                return false;
+            console.log(a);
+            a=Number(a);
+            a=a+total;
+            firebase.database().ref('total').set(a, (error) => {
+                if (error) {
+                    // The write failed...
+                    console.log("Failed");
+                } else {
+                    // Data saved successfully!
+                    console.log("Success");
+                }
+            });
+        }
+        function del() {
+            a = document.getElementById('inlineFormInputName2').value;
+            if (a == "" || a <= 0)
+                return false;
+            console.log(a);
+            a=total-a;
+            firebase.database().ref('total').set(a  , (error) => {
+                if (error) {
+                    // The write failed...
+                    console.log("Failed");
+                } else {
+                    // Data saved successfully!
+                    console.log("Success");
+                }
+            });
+        }
+    </script>
+
+
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
+    <!-- 8.2.6 -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-auth.js"></script> -->
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/5.0.0/firebase-analytics.js" type="text/javascript"></script> -->
+
+    <script>
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        var firebaseConfig = {
+            apiKey: "AIzaSyDqkChltet6F999rIUJC6Ln5Ox82I3Fyfk",
+            authDomain: "mytracker-c6ff4.firebaseapp.com",
+            projectId: "mytracker-c6ff4",
+            storageBucket: "mytracker-c6ff4.appspot.com",
+            messagingSenderId: "280801157813",
+            appId: "1:280801157813:web:73017fc6dcef4fc04394fc",
+            measurementId: "G-9MHZ51FTXW",
+            databaseURL: "https://mytracker-c6ff4-default-rtdb.firebaseio.com/"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        // firebase.analytics();
+
+        var total = 0;
+        var level = 0;
+        const STEP_SIZE = 500;
+
+        rank_list = ["UNRANKED",
+            "Silver I",
+            "Silver II",
+            "Silver III",
+            "Silver IV",
+            "Silver Elite",
+            "Silver Elite",
+            "Master Gold Nova I",
+            "Gold Nova II",
+            "Gold Nova III",
+            "Gold Nova Master",
+            "Master Guardian I",
+            "Master Guardian II",
+            "Master Guardian Elite",
+            "Distinguished Master Guardian",
+            "Legendary Eagle",
+            "Legendary Eagle Master",
+            "Supreme Master First Class",
+            "The Global Elite"]
+
+
+        function update_total(data) {
+            console.log(data);
+            total = Number(data);
+            level = Math.floor(total / STEP_SIZE);
+            if (level > 18)
+                level = 18;
+            document.getElementById('total').innerText = total;
+            document.getElementById('rank').innerText = rank_list[level];
+            document.getElementById("rank_img").src = "cs_go_ranks/" +(level+1)+ ".png";
+        }
+
+        var totalRef = firebase.database().ref('total');
+        totalRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            update_total(data);
+        });
+    </script>
+</body>
+
+</html>
